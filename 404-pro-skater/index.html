@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 Pro Skater</title>
+  <meta name="description" content="A dark-mode endless runner where a skateboarding dinosaur performs tricks and grinds rails.">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./game.js" defer></script>
+</head>
+<body>
+  <main class="game-wrap" id="game-app" tabindex="0">
+    <header class="game-header">
+      <div>
+        <p class="eyebrow">OFFLINE ARCADE</p>
+        <h1>404 Pro Skater</h1>
+      </div>
+
+      <div class="stats" aria-live="polite">
+        <span><span class="stat-label">HI</span><strong id="best">00000</strong></span>
+        <span><span class="stat-label">SCORE</span><strong id="score">00000</strong></span>
+      </div>
+    </header>
+
+    <section class="game-shell" aria-label="404 Pro Skater game">
+      <div class="toolbar">
+        <button id="start" class="primary" type="button">Start / Restart</button>
+        <button id="pause" type="button" disabled>Pause</button>
+      </div>
+
+      <canvas id="game" width="900" height="300" aria-label="404 Pro Skater endless runner"></canvas>
+
+      <div class="help">
+        <span><strong>Jump:</strong> Space, ↑, click, or tap</span>
+        <span><strong>Tricks:</strong> 360 Spin · Kickflip · Pop Shuvit</span>
+        <span><strong>Rails:</strong> land on top to grind</span>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
