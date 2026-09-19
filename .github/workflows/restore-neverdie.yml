@@ -78,6 +78,8 @@ jobs:
               clean = urllib.parse.urlunparse((p.scheme,p.netloc,p.path,p.params,p.query,""))
               ext = Path(p.path.lower()).suffix
               if clean == start or ext in asset_ext:
+                  if ext == ".png":
+                      print("PNG CANDIDATE", clean)
                   queue.append(clean)
 
           def discover(text, base):
