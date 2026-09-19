@@ -88,6 +88,8 @@ jobs:
               for m in re.finditer(r'''(?is)srcset\s*=\s*["']([^"']+)["']''', text):
                   for part in m.group(1).split(","):
                       add_url(part.strip().split()[0], base)
+              for m in re.finditer(r'''(?is)["']([^"']+\.(?:png|jpe?g|gif|webp|svg|woff2?|ttf|otf|eot|mp4|webm|mov|ico)(?:\?[^"']*)?)["']''', text):
+                  add_url(m.group(1), base)
               for m in re.finditer(r'''https?://[^\s"'<>\)]+''', text):
                   add_url(m.group(0), base)
 
