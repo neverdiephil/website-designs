@@ -60,7 +60,17 @@ jobs:
               "User-Agent": "Mozilla/5.0 (compatible; NeverdieArchive/1.0)",
               "Accept": "*/*",
           }
-          queue = deque([start])
+          queue = deque([
+              start,
+              "https://neverdiephil.com/wp-content/themes/neverdietwentyfour/res/spark.png",
+              "https://neverdiephil.com/wp-content/themes/neverdietwentyfour/res/sparks.png",
+              "https://neverdiephil.com/wp-content/themes/neverdietwentyfour/res/lightning-1.png",
+              "https://neverdiephil.com/wp-content/themes/neverdietwentyfour/res/lightning-2.png",
+              "https://neverdiephil.com/wp-content/themes/neverdietwentyfour/res/lightning1.png",
+              "https://neverdiephil.com/wp-content/themes/neverdietwentyfour/res/lightning2.png",
+              "https://neverdiephil.com/wp-content/themes/neverdietwentyfour/res/lightning_1.png",
+              "https://neverdiephil.com/wp-content/themes/neverdietwentyfour/res/lightning_2.png",
+          ])
           seen = set()
           allowed_text = {"text/html", "text/css", "application/javascript", "text/javascript"}
           asset_ext = {".css",".js",".png",".jpg",".jpeg",".gif",".webp",".svg",".woff",".woff2",".ttf",".otf",".eot",".mp4",".webm",".mov",".ico"}
