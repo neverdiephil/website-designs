@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#090a09">
+  <title>Neverdie Phil — Retro Screen</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+  <main class="tv-stage responsive-retro-stage">
+    <div class="tv-shell" aria-label="Retro television website">
+      <section class="tv-screen" aria-live="polite" aria-atomic="true">
+        <div class="vhs-tracking-line" aria-hidden="true"></div>
+        <div class="screen-content">
+          <article class="screen-page is-active" data-page="home">
+            <p class="page-kicker">Personal archive</p>
+            <h1>Neverdie Phil</h1>
+            <p class="page-lede">
+              Welcome to my little corner of the web. This site collects projects,
+              notes, experiments, and whatever else happens to survive the signal.
+            </p>
+
+            <h2>Contents</h2>
+            <ul>
+              <li>Latest projects and experiments</li>
+              <li>Notes from the workbench</li>
+              <li>Background and contact information</li>
+            </ul>
+          </article>
+
+          <article class="screen-page" data-page="posts" hidden>
+            <p class="page-kicker">Archive</p>
+            <h1>Posts</h1>
+            <p class="page-lede">
+              Short notes, build logs, and assorted transmissions.
+            </p>
+
+            <div class="post-list">
+              <article>
+                <h2>Building strange things on the web</h2>
+                <p>Notes on turning small ideas into working prototypes.</p>
+              </article>
+              <article>
+                <h2>Retro interfaces</h2>
+                <p>Experiments inspired by old hardware, CRTs, and physical controls.</p>
+              </article>
+              <article>
+                <h2>Project log</h2>
+                <p>A running collection of things currently being built.</p>
+              </article>
+            </div>
+          </article>
+
+          <article class="screen-page" data-page="about" hidden>
+            <p class="page-kicker">Profile</p>
+            <h1>About Me</h1>
+            <p class="page-lede">
+              Developer, tinkerer, and collector of ideas that are more interesting
+              once they become real.
+            </p>
+
+            <h2>Interests</h2>
+            <p>
+              Software development, automation, game projects, retro technology,
+              design experiments, and finding practical uses for new tools.
+            </p>
+          </article>
+
+          <article class="screen-page" data-page="contact" hidden>
+            <p class="page-kicker">Directory</p>
+            <h1>Contact Us</h1>
+            <p class="page-lede">
+              Want to get in touch? Replace the sample details below with your own.
+            </p>
+
+            <dl class="contact-list">
+              <div>
+                <dt>Email</dt>
+                <dd>hello@example.com</dd>
+              </div>
+              <div>
+                <dt>GitHub</dt>
+                <dd>@username</dd>
+              </div>
+              <div>
+                <dt>Location</dt>
+                <dd>Somewhere near the signal</dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+      </section>
+
+      <img
+        class="tv-frame"
+        src="res/80stv.webp"
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+      >
+
+      <nav class="channel-controls" aria-label="TV channel navigation">
+        <button
+          class="channel-label channel-label--home is-active"
+          type="button"
+          data-channel="home"
+          aria-current="page"
+        >Home</button>
+
+        <button
+          class="channel-label channel-label--posts"
+          type="button"
+          data-channel="posts"
+        >Posts</button>
+
+        <button
+          class="channel-label channel-label--about"
+          type="button"
+          data-channel="about"
+        >About</button>
+
+        <button
+          class="channel-label channel-label--contact"
+          type="button"
+          data-channel="contact"
+        >Contact</button>
+
+        <button
+          class="channel-knob"
+          type="button"
+          aria-label="Channel selector. Home selected. Click to turn to the next channel."
+          aria-keyshortcuts="ArrowLeft ArrowRight ArrowUp ArrowDown Home End Enter Space"
+          data-channel-knob
+        >
+          <span class="channel-knob-face" aria-hidden="true"></span>
+        </button>
+      </nav>
+    </div>
+
+    <div class="gameboy-shell" aria-label="Game Boy Color mobile website">
+      <img
+        class="gameboy-frame"
+        src="res/gameboy-color-mobile.webp"
+        alt=""
+        aria-hidden="true"
+        draggable="false"
+      >
+
+      <section
+        class="gameboy-screen"
+        aria-live="polite"
+        aria-atomic="true"
+        aria-label="Website content"
+      ></section>
+
+      <nav class="gameboy-controls" aria-label="Game Boy page controls">
+        <button
+          class="gbc-hotspot gbc-hotspot--a"
+          type="button"
+          data-gameboy-action="next"
+          aria-label="A button: next page"
+        ></button>
+
+        <button
+          class="gbc-hotspot gbc-hotspot--b"
+          type="button"
+          data-gameboy-action="previous"
+          aria-label="B button: previous page"
+        ></button>
+
+        <button
+          class="gbc-hotspot gbc-hotspot--dpad-left"
+          type="button"
+          data-gameboy-action="previous"
+          aria-label="D-pad left: previous page"
+        ></button>
+
+        <button
+          class="gbc-hotspot gbc-hotspot--dpad-right"
+          type="button"
+          data-gameboy-action="next"
+          aria-label="D-pad right: next page"
+        ></button>
+
+        <button
+          class="gbc-hotspot gbc-hotspot--dpad-up"
+          type="button"
+          data-gameboy-action="scroll-up"
+          aria-label="D-pad up: scroll page up"
+        ></button>
+
+        <button
+          class="gbc-hotspot gbc-hotspot--dpad-down"
+          type="button"
+          data-gameboy-action="scroll-down"
+          aria-label="D-pad down: scroll page down"
+        ></button>
+
+        <button
+          class="gbc-hotspot gbc-hotspot--start"
+          type="button"
+          data-gameboy-action="home"
+          aria-label="Start button: return home"
+        ></button>
+      </nav>
+    </div>
+
+    <div class="tamagotchi-shell" aria-label="Tamagotchi landscape website">
+      <div class="tamagotchi-surface" aria-hidden="true"></div>
+
+      <nav class="tamagotchi-iconbar" aria-label="Tamagotchi page menu">
+        <button type="button" class="tama-icon is-active" data-tama-channel="home" aria-label="Home">
+          <span aria-hidden="true">⌂</span>
+        </button>
+        <button type="button" class="tama-icon" data-tama-channel="posts" aria-label="Posts">
+          <span aria-hidden="true">✎</span>
+        </button>
+        <button type="button" class="tama-icon" data-tama-channel="about" aria-label="About Me">
+          <span aria-hidden="true">☺</span>
+        </button>
+        <button type="button" class="tama-icon" data-tama-channel="contact" aria-label="Contact Us">
+          <span aria-hidden="true">✉</span>
+        </button>
+      </nav>
+
+      <section
+        class="tamagotchi-screen"
+        aria-live="polite"
+        aria-atomic="true"
+        aria-label="Website content"
+      ></section>
+
+      <div class="tamagotchi-pet" aria-hidden="true">
+        <span class="pet-pixel pet-pixel--ear-l"></span>
+        <span class="pet-pixel pet-pixel--ear-r"></span>
+        <span class="pet-pixel pet-pixel--body"></span>
+        <span class="pet-pixel pet-pixel--eye-l"></span>
+        <span class="pet-pixel pet-pixel--eye-r"></span>
+        <span class="pet-pixel pet-pixel--mouth"></span>
+      </div>
+
+      <nav class="tamagotchi-buttons" aria-label="Tamagotchi controls">
+        <button type="button" class="tama-button" data-tama-action="previous" aria-label="Previous page">◀</button>
+        <button type="button" class="tama-button tama-button--home" data-tama-action="home" aria-label="Home page">●</button>
+        <button type="button" class="tama-button" data-tama-action="next" aria-label="Next page">▶</button>
+      </nav>
+    </div>
+  </main>
+
+  <script src="main.js" defer></script>
+</body>
+</html>

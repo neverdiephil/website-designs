@@ -1,0 +1,1418 @@
+:root {
+  /* Measured from the transparent aperture in res/80stv.webp (1024×1024). */
+  --screen-left: 20.80%;
+  --screen-top: 21.48%;
+  --screen-width: 39.06%;
+  --screen-height: 38.77%;
+
+  /* Perspective tuning for the photographed TV face. */
+  --screen-perspective: 78cqw;
+  --screen-tilt-x: 3deg;
+  --screen-tilt-y: -8deg;
+  --screen-roll: -5deg;
+  --screen-scale-x: 1.1;
+  --screen-scale-y: 1.06;
+
+  --page-background: #050606;
+  --screen-background: #171713;
+  --screen-foreground: #f2eee4;
+  --screen-muted: #d3cdbf;
+  --screen-rule: rgb(242 238 228 / 0.24);
+
+  /* Top photographed knob.
+     The larger hit area improves mouse/touch usability while the inner face
+     remains aligned with the original knob artwork. */
+  --knob-hit-left: 65.18%;
+  --knob-hit-top: 15.52%;
+  --knob-hit-size: 6.95%;
+
+  --knob-face-left: 11.8%;
+  --knob-face-top: 11.7%;
+  --knob-face-size: 76.4%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--page-background);
+  color: var(--screen-foreground);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tv-stage {
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  overflow: hidden;
+  background: var(--page-background);
+}
+
+.tv-shell {
+  position: relative;
+  width: min(100vw, 100vh);
+  width: min(100vw, 100svh);
+  aspect-ratio: 1;
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+.tv-frame {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.tv-screen {
+  position: absolute;
+  top: var(--screen-top);
+  left: var(--screen-left);
+  z-index: 1;
+  width: var(--screen-width);
+  height: var(--screen-height);
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--screen-background);
+  color: var(--screen-foreground);
+  transform-origin: 50% 50%;
+  transform:
+    perspective(var(--screen-perspective))
+    rotateX(var(--screen-tilt-x))
+    rotateY(var(--screen-tilt-y))
+    rotateZ(var(--screen-roll))
+    scale(var(--screen-scale-x), var(--screen-scale-y));
+  scrollbar-width: none;
+}
+
+.tv-screen::-webkit-scrollbar {
+  display: none;
+}
+
+.tv-screen::before,
+.tv-screen::after {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  content: "";
+  pointer-events: none;
+}
+
+.tv-screen::before {
+  opacity: 0.11;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 0.12) 0,
+      rgb(255 255 255 / 0.12) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+.tv-screen::after {
+  inset: -8%;
+  opacity: 0.10;
+  background:
+    repeating-radial-gradient(
+      circle,
+      rgb(255 255 255 / 0.16) 0 1px,
+      rgb(0 0 0 / 0.14) 1px 3px,
+      transparent 3px 6px
+    );
+  animation: static-shift 220ms steps(4) infinite;
+}
+
+.screen-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+  padding: 11% 11% 13%;
+  text-shadow: 0 0 0.35em rgb(255 255 255 / 0.15);
+  animation: signal-flicker 4s infinite;
+}
+
+.screen-page {
+  animation: page-arrive 220ms ease-out both;
+}
+
+.screen-page[hidden] {
+  display: none;
+}
+
+.page-kicker {
+  margin: 0 0 0.35em;
+  color: var(--screen-muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(0.34rem, 1.10cqw, 0.65rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.screen-content h1 {
+  margin: 0 0 0.25em;
+  padding-bottom: 0.18em;
+  border-bottom: 1px solid var(--screen-rule);
+  font-size: clamp(0.82rem, 3.15cqw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.screen-content h2 {
+  margin: 0.95em 0 0.25em;
+  font-size: clamp(0.55rem, 1.75cqw, 1rem);
+  line-height: 1.15;
+}
+
+.screen-content p,
+.screen-content li,
+.screen-content dt,
+.screen-content dd {
+  color: var(--screen-muted);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(0.46rem, 1.48cqw, 0.86rem);
+  line-height: 1.42;
+}
+
+.screen-content p {
+  max-width: 35ch;
+  margin: 0 0 0.8em;
+}
+
+.screen-content .page-lede {
+  color: var(--screen-foreground);
+}
+
+.screen-content ul {
+  margin: 0.3em 0 0;
+  padding-left: 1.15em;
+}
+
+.post-list article + article {
+  margin-top: 0.7em;
+  padding-top: 0.6em;
+  border-top: 1px solid var(--screen-rule);
+}
+
+.post-list h2 {
+  margin-top: 0;
+}
+
+.post-list p {
+  margin-bottom: 0;
+}
+
+.contact-list {
+  margin: 0.7em 0 0;
+}
+
+.contact-list > div {
+  display: grid;
+  grid-template-columns: 28% 1fr;
+  gap: 0.5em;
+  padding: 0.35em 0;
+  border-top: 1px solid var(--screen-rule);
+}
+
+.contact-list dt {
+  color: var(--screen-foreground);
+  font-weight: 700;
+}
+
+.contact-list dd {
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Physical channel selector
+   -------------------------------------------------------------------------- */
+
+.channel-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.channel-knob {
+  position: absolute;
+  top: var(--knob-hit-top);
+  left: var(--knob-hit-left);
+  width: var(--knob-hit-size);
+  aspect-ratio: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  outline: none;
+  background: transparent;
+  cursor: grab;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.channel-knob:active {
+  cursor: grabbing;
+}
+
+.channel-knob-face {
+  position: absolute;
+  top: var(--knob-face-top);
+  left: var(--knob-face-left);
+  width: var(--knob-face-size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: url("res/channel-knob.png") center / cover no-repeat;
+  box-shadow:
+    0 0.12cqw 0.25cqw rgb(0 0 0 / 0.22),
+    inset 0 0 0.12cqw rgb(255 255 255 / 0.16);
+  transform: rotate(var(--knob-angle, 0deg));
+  transition:
+    transform 360ms cubic-bezier(.22, .8, .2, 1.08),
+    filter 120ms ease;
+  will-change: transform;
+}
+
+/* A tiny pointer is added because the photographed center stripe is nearly
+   symmetrical and otherwise does not clearly identify one of four detents. */
+.channel-knob-face::after {
+  position: absolute;
+  top: 1.5%;
+  left: 50%;
+  width: 11%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #e9dfbd;
+  box-shadow:
+    0 0 0 0.05cqw rgb(0 0 0 / 0.65),
+    0 0 0.22cqw rgb(255 239 185 / 0.55);
+  content: "";
+  transform: translateX(-50%);
+}
+
+.channel-knob:hover .channel-knob-face {
+  filter: brightness(1.08);
+}
+
+.channel-knob:active .channel-knob-face {
+  filter: brightness(0.92);
+}
+
+.channel-knob:focus-visible::after {
+  position: absolute;
+  inset: 4%;
+  border: max(1px, 0.12cqw) solid rgb(242 238 228 / 0.85);
+  border-radius: 50%;
+  content: "";
+  box-shadow: 0 0 0.4cqw rgb(242 238 228 / 0.35);
+}
+
+/* Page labels are intentionally hidden for a cleaner, more authentic TV face.
+   The knob remains the primary navigation control. */
+.channel-label {
+  display: none;
+}
+
+/* The label positioning rules below are retained so they can be re-enabled
+   later without rebuilding the navigation markup. */
+.channel-label--home {
+  top: 14.15%;
+  left: 68.63%;
+  transform: translate(-50%, -50%) rotate(-4deg);
+}
+
+.channel-label--posts {
+  top: 19.05%;
+  left: 73.40%;
+  transform: translate(-10%, -50%) rotate(-4deg);
+}
+
+.channel-label--about {
+  top: 24.05%;
+  left: 68.62%;
+  transform: translate(-50%, -50%) rotate(-4deg);
+}
+
+.channel-label--contact {
+  top: 19.10%;
+  left: 63.55%;
+  transform: translate(-90%, -50%) rotate(-4deg);
+}
+
+.tv-screen.channel-changing::after {
+  opacity: 0.84;
+  animation: channel-burst 260ms steps(6) 1;
+}
+
+.tv-screen.channel-changing .screen-content {
+  animation: channel-collapse 260ms ease-out 1;
+}
+
+/* Visually hidden utility. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes static-shift {
+  from {
+    transform: translate3d(-2%, -2%, 0);
+  }
+
+  to {
+    transform: translate3d(2%, 2%, 0);
+  }
+}
+
+@keyframes signal-flicker {
+  0%, 8%, 12%, 20%, 100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  10% {
+    transform: translateY(-0.18%);
+    opacity: 0.97;
+  }
+
+  18% {
+    transform: translateY(0.14%);
+    opacity: 0.985;
+  }
+}
+
+@keyframes channel-burst {
+  0% {
+    transform: translate3d(-3%, 2%, 0) scale(1.05);
+  }
+
+  35% {
+    transform: translate3d(2%, -2%, 0) scale(1.08);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes channel-collapse {
+  0% {
+    filter: brightness(1);
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  45% {
+    filter: brightness(2.3);
+    opacity: 0.35;
+    transform: scaleY(0.08);
+  }
+
+  55% {
+    filter: brightness(2.3);
+    opacity: 0.2;
+    transform: scaleY(0.02);
+  }
+
+  100% {
+    filter: brightness(1);
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes page-arrive {
+  from {
+    opacity: 0.65;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+/* --------------------------------------------------------------------------
+   VHS tracking band
+   -------------------------------------------------------------------------- */
+
+.vhs-tracking-line {
+  position: absolute;
+  left: -6%;
+  bottom: -14%;
+  z-index: 6;
+  width: 112%;
+  height: 4.8%;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  filter: blur(0.35px);
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgb(255 255 255 / 0.10) 12%,
+      rgb(255 255 255 / 0.48) 34%,
+      rgb(255 255 255 / 0.12) 52%,
+      rgb(0 0 0 / 0.30) 72%,
+      transparent 100%
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgb(255 255 255 / 0.28) 0,
+      rgb(255 255 255 / 0.08) 1px,
+      rgb(0 0 0 / 0.22) 2px,
+      transparent 4px
+    );
+  box-shadow:
+    0 -0.35cqw 0.6cqw rgb(255 255 255 / 0.08),
+    0 0.45cqw 0.7cqw rgb(0 0 0 / 0.22);
+  will-change: bottom, opacity, transform;
+}
+
+.vhs-tracking-line.is-active {
+  animation: vhs-track 1.65s linear 1;
+}
+
+.tv-screen.vhs-distorting .screen-content {
+  animation:
+    signal-flicker 4s infinite,
+    vhs-picture-jitter 1.65s linear 1;
+}
+
+.tv-screen.vhs-distorting::before {
+  animation: vhs-scanline-warp 1.65s linear 1;
+}
+
+@keyframes vhs-track {
+  0% {
+    bottom: -14%;
+    opacity: 0;
+    transform: translateX(-0.7%) skewX(-2deg) scaleY(0.8);
+  }
+
+  7% {
+    opacity: 0.72;
+  }
+
+  26% {
+    opacity: 0.44;
+    transform: translateX(0.4%) skewX(1deg) scaleY(1.25);
+  }
+
+  50% {
+    opacity: 0.62;
+    transform: translateX(-0.3%) skewX(-0.7deg) scaleY(1.5);
+  }
+
+  74% {
+    opacity: 0.47;
+    transform: translateX(0.6%) skewX(0.9deg) scaleY(1.05);
+  }
+
+  92% {
+    opacity: 0.68;
+  }
+
+  100% {
+    bottom: 114%;
+    opacity: 0;
+    transform: translateX(-0.4%) skewX(-1deg) scaleY(0.9);
+  }
+}
+
+@keyframes vhs-picture-jitter {
+  0%, 8%, 20%, 32%, 44%, 58%, 70%, 84%, 100% {
+    transform: translateX(0);
+  }
+
+  12% {
+    transform: translateX(-0.45%);
+  }
+
+  26% {
+    transform: translateX(0.7%);
+  }
+
+  38% {
+    transform: translateX(-0.85%);
+  }
+
+  52% {
+    transform: translateX(0.5%);
+  }
+
+  64% {
+    transform: translateX(-0.35%);
+  }
+
+  78% {
+    transform: translateX(0.65%);
+  }
+
+  90% {
+    transform: translateX(-0.25%);
+  }
+}
+
+@keyframes vhs-scanline-warp {
+  0%, 100% {
+    transform: translateX(0);
+    opacity: 0.11;
+  }
+
+  24% {
+    transform: translateX(-0.35%);
+    opacity: 0.15;
+  }
+
+  48% {
+    transform: translateX(0.55%);
+    opacity: 0.18;
+  }
+
+  72% {
+    transform: translateX(-0.25%);
+    opacity: 0.13;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tv-screen::after,
+  .screen-content,
+  .screen-page,
+  .tv-screen.channel-changing::after,
+  .tv-screen.channel-changing .screen-content,
+  .channel-knob-face,
+  .vhs-tracking-line,
+  .tv-screen.vhs-distorting .screen-content,
+  .tv-screen.vhs-distorting::before {
+    animation: none;
+    transition: none;
+  }
+
+  .vhs-tracking-line {
+    display: none;
+  }
+}
+
+
+/* ==========================================================================
+   MOBILE: SCRATCHED GAME BOY COLOR
+   At phone widths the television is replaced completely by the supplied
+   scratched Game Boy Color photograph. The page sits over the original LCD.
+   ========================================================================== */
+
+.gameboy-shell {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  html,
+  body {
+    width: 100%;
+    min-height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 50% 42%, #3f2415 0, #23140d 56%, #120b08 100%);
+  }
+
+  .responsive-retro-stage {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 0;
+    background:
+      radial-gradient(circle at 50% 42%, #3f2415 0, #23140d 56%, #120b08 100%);
+  }
+
+  .tv-shell {
+    display: none;
+  }
+
+  .gameboy-shell {
+    position: relative;
+    display: block;
+    width: min(100vw, 65svh);
+    aspect-ratio: 0.65;
+    overflow: hidden;
+    container-type: inline-size;
+    isolation: isolate;
+    user-select: none;
+  }
+
+  /* The source photo is wider than the mobile shell. Keeping its full height
+     and centering it crops only the wood at the sides, making the Game Boy
+     itself fill far more of a phone screen without altering the artwork. */
+  .gameboy-frame {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    display: block;
+    width: auto;
+    height: 100%;
+    max-width: none;
+    transform: translateX(-50%);
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* Coordinates are mapped to the physical LCD in the supplied 1123×1401
+     photograph after the side-cropping performed above. */
+  .gameboy-screen {
+    position: absolute;
+    top: 10.25%;
+    left: 23.55%;
+    z-index: 2;
+    width: 50.95%;
+    height: 27.20%;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border-radius: 0.4cqw;
+    background: rgb(175 188 157 / 0.76);
+    color: #182218;
+    box-shadow:
+      inset 0 0 2.8cqw rgb(17 25 17 / 0.22),
+      inset 0 0 0 0.16cqw rgb(34 45 32 / 0.24);
+    text-shadow: 0 0.06em rgb(214 226 190 / 0.3);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    transform: rotate(-0.15deg);
+  }
+
+  .gameboy-screen::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* LCD pixel grid. The alpha is intentionally low so the scratches in the
+     photograph remain visible through the translucent web page. */
+  .gameboy-screen::before {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-bottom: -100%;
+    content: "";
+    pointer-events: none;
+    opacity: 0.13;
+    background:
+      repeating-linear-gradient(
+        to right,
+        rgb(20 31 18 / 0.34) 0,
+        rgb(20 31 18 / 0.34) 0.6px,
+        transparent 0.6px,
+        transparent 2.4px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        rgb(20 31 18 / 0.28) 0,
+        rgb(20 31 18 / 0.28) 0.6px,
+        transparent 0.6px,
+        transparent 2.4px
+      );
+  }
+
+  .gameboy-screen::after {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-bottom: -100%;
+    content: "";
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse at center,
+        transparent 54%,
+        rgb(25 37 23 / 0.12) 100%
+      );
+  }
+
+  .gameboy-screen .screen-content {
+    position: relative;
+    z-index: 2;
+    min-height: 100%;
+    padding: 7.5% 8% 10%;
+    color: #182218;
+    text-shadow: none;
+    animation: none;
+    user-select: text;
+  }
+
+  .gameboy-screen .page-kicker {
+    margin-bottom: 0.4em;
+    color: #314331;
+    font-family: "Courier New", Courier, monospace;
+    font-size: clamp(0.34rem, 2.05cqw, 0.58rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .gameboy-screen .screen-content h1 {
+    margin: 0 0 0.35em;
+    padding-bottom: 0.18em;
+    border-color: rgb(32 48 31 / 0.42);
+    color: #111b11;
+    font-family: "Courier New", Courier, monospace;
+    font-size: clamp(0.72rem, 4.4cqw, 1.22rem);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+
+  .gameboy-screen .screen-content h2 {
+    margin: 0.8em 0 0.25em;
+    color: #172317;
+    font-family: "Courier New", Courier, monospace;
+    font-size: clamp(0.48rem, 2.65cqw, 0.76rem);
+    line-height: 1.08;
+    text-transform: uppercase;
+  }
+
+  .gameboy-screen .screen-content p,
+  .gameboy-screen .screen-content li,
+  .gameboy-screen .screen-content dt,
+  .gameboy-screen .screen-content dd {
+    color: #243324;
+    font-family: "Courier New", Courier, monospace;
+    font-size: clamp(0.40rem, 2.15cqw, 0.63rem);
+    line-height: 1.22;
+  }
+
+  .gameboy-screen .screen-content p {
+    max-width: none;
+    margin-bottom: 0.65em;
+  }
+
+  .gameboy-screen .screen-content .page-lede {
+    color: #172317;
+  }
+
+  .gameboy-screen .screen-content ul {
+    margin-top: 0.25em;
+    padding-left: 1.1em;
+  }
+
+  .gameboy-screen .post-list article + article,
+  .gameboy-screen .contact-list > div {
+    border-color: rgb(32 48 31 / 0.34);
+  }
+
+  .gameboy-screen .contact-list > div {
+    grid-template-columns: 32% 1fr;
+    gap: 0.35em;
+  }
+
+  .gameboy-screen.lcd-changing {
+    animation: lcd-page-switch 180ms steps(2) 1;
+  }
+
+  /* ------------------------------------------------------------------------
+     Invisible hotspots aligned with the photographed Game Boy controls.
+     Nothing artificial is drawn over the console unless keyboard focus is
+     visible; users simply tap the physical-looking controls in the photo.
+     ------------------------------------------------------------------------ */
+
+  .gameboy-controls {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .gbc-hotspot {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    cursor: pointer;
+    pointer-events: auto;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .gbc-hotspot:active {
+    background: rgb(255 255 255 / 0.045);
+  }
+
+  .gbc-hotspot:focus-visible {
+    outline: max(2px, 0.28cqw) solid rgb(221 236 185 / 0.88);
+    outline-offset: 0.3cqw;
+    background: rgb(221 236 185 / 0.08);
+  }
+
+  .gbc-hotspot--a {
+    top: 56.4%;
+    left: 79.4%;
+    width: 11.4%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  .gbc-hotspot--b {
+    top: 59.7%;
+    left: 61.5%;
+    width: 11.4%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  .gbc-hotspot--dpad-left {
+    top: 60.1%;
+    left: 12.0%;
+    width: 9.3%;
+    height: 6.1%;
+  }
+
+  .gbc-hotspot--dpad-right {
+    top: 60.1%;
+    left: 26.1%;
+    width: 9.3%;
+    height: 6.1%;
+  }
+
+  .gbc-hotspot--dpad-up {
+    top: 55.6%;
+    left: 20.0%;
+    width: 7.2%;
+    height: 7.3%;
+  }
+
+  .gbc-hotspot--dpad-down {
+    top: 64.2%;
+    left: 20.0%;
+    width: 7.2%;
+    height: 7.3%;
+  }
+
+  .gbc-hotspot--start {
+    top: 76.0%;
+    left: 52.0%;
+    width: 12.4%;
+    height: 4.2%;
+    border-radius: 999px;
+  }
+
+  @keyframes lcd-page-switch {
+    0% {
+      filter: contrast(1) brightness(1);
+      opacity: 1;
+    }
+
+    45% {
+      filter: contrast(1.55) brightness(1.16);
+      opacity: 0.58;
+    }
+
+    100% {
+      filter: contrast(1) brightness(1);
+      opacity: 1;
+    }
+  }
+}
+
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+  .gameboy-screen.lcd-changing {
+    animation: none;
+  }
+}
+
+
+/* ==========================================================================
+   LANDSCAPE HANDHELD: TAMAGOTCHI-STYLE FULL-VIEW SCREEN
+   Triggered on landscape phones / compact tablets. It replaces both the TV
+   and portrait Game Boy layouts and fills essentially the entire viewport.
+   ========================================================================== */
+
+.tamagotchi-shell {
+  display: none;
+}
+
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1200px) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: #d9d98f;
+  }
+
+  .responsive-retro-stage {
+    display: block;
+    width: 100vw;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 0;
+    overflow: hidden;
+    background: #d9d98f;  }
+
+  .tv-shell,
+  .gameboy-shell {
+    display: none !important;
+  }
+
+  .tamagotchi-shell {
+    --tama-ink: #102d2b;
+    --tama-ink-soft: #274643;
+    --tama-lcd: #cfd69b;
+    --tama-lcd-light: #e5dfaa;
+    --tama-pink: #dfa7b2;
+    --tama-blue: #9fc9c6;
+    --tama-yellow: #e9dfa0;
+
+    position: relative;
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+      linear-gradient(135deg, transparent 0 25%, rgb(223 167 178 / 0.62) 25% 50%, transparent 50% 75%, rgb(159 201 198 / 0.62) 75%) 0 0 / 46px 46px,
+      linear-gradient(45deg, rgb(233 223 160 / 0.58) 0 25%, transparent 25% 50%, rgb(223 167 178 / 0.45) 50% 75%, transparent 75%) 0 0 / 46px 46px,
+      var(--tama-lcd);
+    box-shadow:
+      inset 0 0 0 4px #233c39,
+      inset 0 0 0 8px #e9e0b3,
+      inset 0 0 0 12px #5a6d5d,
+      inset 0 0 32px rgb(28 48 42 / 0.34);
+    font-family: "Courier New", Courier, monospace;
+  }
+
+  .tamagotchi-surface {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.34;
+    background:
+      repeating-linear-gradient(
+        92deg,
+        transparent 0 19px,
+        rgb(25 47 43 / 0.09) 19px 20px,
+        transparent 20px 47px
+      ),
+      repeating-linear-gradient(
+        -8deg,
+        transparent 0 37px,
+        rgb(255 255 220 / 0.14) 37px 38px,
+        transparent 38px 82px
+      );
+  }
+
+  .tamagotchi-shell::before,
+  .tamagotchi-shell::after {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    content: "";
+    pointer-events: none;
+  }
+
+  .tamagotchi-shell::before {
+    opacity: 0.18;
+    background:
+      repeating-linear-gradient(
+        to right,
+        rgb(16 45 43 / 0.22) 0 1px,
+        transparent 1px 4px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        rgb(16 45 43 / 0.20) 0 1px,
+        transparent 1px 4px
+      );
+    mix-blend-mode: multiply;
+  }
+
+  .tamagotchi-shell::after {
+    box-shadow:
+      inset 0 0 48px rgb(19 41 36 / 0.24),
+      inset 0 0 0 2px rgb(238 231 181 / 0.58);
+  }
+
+  /* Top icon row inspired by the reference Tamagotchi screen. */
+  .tamagotchi-iconbar {
+    position: absolute;
+    top: 4.5%;
+    left: 50%;
+    z-index: 10;
+    display: flex;
+    gap: clamp(12px, 4vw, 46px);
+    transform: translateX(-50%);
+  }
+
+  .tama-icon {
+    display: grid;
+    width: clamp(42px, 7.6vw, 70px);
+    aspect-ratio: 1;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--tama-ink);
+    font: 900 clamp(24px, 5vw, 46px) / 1 "Courier New", monospace;
+    cursor: pointer;
+    image-rendering: pixelated;
+    text-shadow:
+      2px 0 0 var(--tama-ink),
+      -2px 0 0 var(--tama-ink);
+    transition: transform 90ms steps(2), background-color 90ms linear;
+  }
+
+  .tama-icon:hover,
+  .tama-icon:focus-visible {
+    background: rgb(234 224 173 / 0.48);
+  }
+
+  .tama-icon.is-active {
+    background: rgb(16 45 43 / 0.12);
+    box-shadow: inset 0 0 0 3px var(--tama-ink);
+  }
+
+  .tama-icon:active {
+    transform: translateY(2px) scale(0.96);
+  }
+
+  .tama-icon:focus-visible {
+    outline: 3px dashed var(--tama-ink);
+    outline-offset: 3px;
+  }
+
+  /* Main content LCD. Kept large and centered so it becomes the landscape UI. */
+  .tamagotchi-screen {
+    position: absolute;
+    top: 22%;
+    left: 8%;
+    z-index: 3;
+    width: 84%;
+    height: 58%;
+    overflow: auto;
+    overscroll-behavior: contain;
+    border: 4px solid var(--tama-ink);
+    border-radius: 12px;
+    background:
+      linear-gradient(rgb(232 228 177 / 0.70), rgb(207 214 155 / 0.76));
+    color: var(--tama-ink);
+    box-shadow:
+      0 0 0 4px rgb(237 227 177 / 0.65),
+      0 0 0 7px rgb(39 70 67 / 0.16),
+      inset 0 0 18px rgb(18 48 44 / 0.13);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tamagotchi-screen::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tamagotchi-screen::before {
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 6;
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-bottom: -100%;
+    content: "";
+    pointer-events: none;
+    opacity: 0.17;
+    background:
+      repeating-linear-gradient(
+        to right,
+        rgb(16 45 43 / 0.25) 0 1px,
+        transparent 1px 5px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        rgb(16 45 43 / 0.21) 0 1px,
+        transparent 1px 5px
+      );
+  }
+
+  .tamagotchi-screen .screen-content {
+    position: relative;
+    z-index: 2;
+    min-height: 100%;
+    padding: 4.2% 6% 5%;
+    color: var(--tama-ink);
+    text-shadow: none;
+    animation: none;
+    user-select: text;
+  }
+
+  .tamagotchi-screen .page-kicker {
+    margin-bottom: 0.3em;
+    color: var(--tama-ink-soft);
+    font-family: "Courier New", monospace;
+    font-size: clamp(0.56rem, 1.7vw, 0.86rem);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .tamagotchi-screen .screen-content h1 {
+    margin: 0 0 0.28em;
+    padding-bottom: 0.14em;
+    border-bottom: 3px solid var(--tama-ink);
+    color: var(--tama-ink);
+    font-family: "Courier New", monospace;
+    font-size: clamp(1rem, 3.2vw, 1.8rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+  }
+
+  .tamagotchi-screen .screen-content h2 {
+    margin: 0.7em 0 0.18em;
+    color: var(--tama-ink);
+    font-family: "Courier New", monospace;
+    font-size: clamp(0.68rem, 1.8vw, 1rem);
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .tamagotchi-screen .screen-content p,
+  .tamagotchi-screen .screen-content li,
+  .tamagotchi-screen .screen-content dt,
+  .tamagotchi-screen .screen-content dd {
+    color: var(--tama-ink-soft);
+    font-family: "Courier New", monospace;
+    font-size: clamp(0.58rem, 1.5vw, 0.86rem);
+    line-height: 1.25;
+  }
+
+  .tamagotchi-screen .screen-content p {
+    max-width: 65ch;
+    margin-bottom: 0.55em;
+  }
+
+  .tamagotchi-screen .screen-content .page-lede {
+    color: var(--tama-ink);
+  }
+
+  .tamagotchi-screen .screen-content ul {
+    margin-top: 0.2em;
+    padding-left: 1.15em;
+  }
+
+  .tamagotchi-screen .post-list article + article,
+  .tamagotchi-screen .contact-list > div {
+    border-color: rgb(16 45 43 / 0.40);
+  }
+
+  .tamagotchi-screen .contact-list > div {
+    grid-template-columns: 24% 1fr;
+  }
+
+  /* Tiny pixel pet gives the landscape mode a real Tamagotchi personality.
+     It subtly bobs but never blocks the readable content. */
+  .tamagotchi-pet {
+    position: absolute;
+    right: 3.2%;
+    bottom: 4.4%;
+    z-index: 9;
+    width: clamp(34px, 5.2vw, 56px);
+    aspect-ratio: 1;
+    pointer-events: none;
+    animation: tama-pet-bob 1.4s steps(2) infinite;
+  }
+
+  .pet-pixel {
+    position: absolute;
+    background: var(--tama-ink);
+    image-rendering: pixelated;
+  }
+
+  .pet-pixel--body {
+    inset: 22% 14% 10%;
+    border-radius: 18% 18% 26% 26%;
+  }
+
+  .pet-pixel--ear-l,
+  .pet-pixel--ear-r {
+    top: 8%;
+    width: 24%;
+    height: 28%;
+  }
+
+  .pet-pixel--ear-l {
+    left: 18%;
+    transform: rotate(-18deg);
+  }
+
+  .pet-pixel--ear-r {
+    right: 18%;
+    transform: rotate(18deg);
+  }
+
+  .pet-pixel--eye-l,
+  .pet-pixel--eye-r {
+    top: 44%;
+    z-index: 2;
+    width: 9%;
+    aspect-ratio: 1;
+    background: var(--tama-lcd-light);
+  }
+
+  .pet-pixel--eye-l {
+    left: 33%;
+  }
+
+  .pet-pixel--eye-r {
+    right: 33%;
+  }
+
+  .pet-pixel--mouth {
+    left: 44%;
+    bottom: 27%;
+    z-index: 2;
+    width: 14%;
+    height: 6%;
+    background: var(--tama-lcd-light);
+  }
+
+  /* Three simple Tamagotchi-like physical controls along the bottom. */
+  .tamagotchi-buttons {
+    position: absolute;
+    bottom: 3.2%;
+    left: 50%;
+    z-index: 10;
+    display: flex;
+    gap: clamp(24px, 5vw, 64px);
+    transform: translateX(-50%);
+  }
+
+  .tama-button {
+    display: grid;
+    width: clamp(42px, 6.4vw, 62px);
+    aspect-ratio: 1;
+    place-items: center;
+    padding: 0;
+    border: 3px solid var(--tama-ink);
+    border-radius: 50%;
+    background: var(--tama-yellow);
+    color: var(--tama-ink);
+    box-shadow:
+      0 4px 0 var(--tama-ink),
+      inset 0 0 0 3px rgb(255 248 200 / 0.45);
+    font: 900 clamp(18px, 3.6vw, 32px) / 1 "Courier New", monospace;
+    cursor: pointer;
+    transition: transform 80ms steps(2), box-shadow 80ms steps(2);
+  }
+
+  .tama-button--home {
+    background: var(--tama-pink);
+  }
+
+  .tama-button:active {
+    transform: translateY(4px);
+    box-shadow:
+      0 0 0 var(--tama-ink),
+      inset 0 0 0 3px rgb(255 248 200 / 0.35);
+  }
+
+  .tama-button:focus-visible {
+    outline: 3px dashed var(--tama-ink);
+    outline-offset: 4px;
+  }
+
+  .tamagotchi-screen.tama-changing {
+    animation: tama-page-switch 180ms steps(3) 1;
+  }
+
+  @keyframes tama-page-switch {
+    0% {
+      filter: contrast(1) brightness(1);
+      transform: translateX(0);
+    }
+
+    35% {
+      filter: contrast(1.45) brightness(1.08);
+      transform: translateX(-3px);
+    }
+
+    70% {
+      filter: contrast(0.88) brightness(0.97);
+      transform: translateX(2px);
+    }
+
+    100% {
+      filter: contrast(1) brightness(1);
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes tama-pet-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-3px);
+    }
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) and (max-width: 1200px) and (prefers-reduced-motion: reduce) {
+  .tamagotchi-pet,
+  .tamagotchi-screen.tama-changing {
+    animation: none;
+  }
+}
