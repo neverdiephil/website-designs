@@ -83,11 +83,14 @@ jobs:
                   raw = "https:" + raw
               u = urllib.parse.urljoin(base, raw)
               p = urllib.parse.urlparse(u)
-              if p.scheme not in {"http", "https"} or p.netloc.lower() != host:
+              if p.scheme not in {"http", "https"}:
                   return
               clean = urllib.parse.urlunparse((p.scheme,p.netloc,p.path,p.params,p.query,""))
               ext = Path(p.path.lower()).suffix
-              if clean == start or ext in asset_ext:
+              same_host = p.netloc.lower() == host
+              # Traverse the site normally, but also inspect PNG assets referenced
+              # from external hosts. Every accepted file is still checksum-gated.
+              if clean == start or (same_host and ext in asset_ext) or ext == ".png":
                   if ext == ".png":
                       print("PNG CANDIDATE", clean)
                   queue.append(clean)
